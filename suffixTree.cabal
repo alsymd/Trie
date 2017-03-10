@@ -39,4 +39,4 @@ test-suite suffixTree-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/suffixTree
+  location: https://github.com/alcymd/suffixTree
