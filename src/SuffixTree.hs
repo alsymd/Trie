@@ -1,8 +1,16 @@
 module SuffixTree
   (empty,
    singleton,
-   insert)where
+   insert,
+   lookup,
+   delete)where
 import qualified Data.Map.Lazy as Map
+import Prelude ();
+import Data.Maybe
+import Data.Bool
+import Text.Show
+import Data.Eq
+import Data.Ord
 import Data.Monoid
 import Data.Foldable
 data SuffixTree c e = SuffixTree (Maybe e) (Map.Map c (SuffixTree c e)) deriving(Show,Eq,Ord)
