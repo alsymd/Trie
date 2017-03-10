@@ -1,7 +1,9 @@
 module SuffixTree
   (empty,
    singleton,
-   insert)where
+   insert,
+   SuffixTree.lookup,
+   delete)where
 import qualified Data.Map.Lazy as Map
 import Data.Monoid
 import Data.Foldable
