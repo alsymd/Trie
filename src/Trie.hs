@@ -13,41 +13,41 @@ import Data.Eq
 import Data.Ord
 import Data.Monoid
 import Data.Foldable
-data SuffixTree c e = SuffixTree (Maybe e) (Map.Map c (SuffixTree c e)) deriving(Show,Eq,Ord)
+data Trie c e = Trie (Maybe e) (Map.Map c (Trie c e)) deriving(Show,Eq,Ord)
 
-empty = SuffixTree Nothing Map.empty
-singleton v = SuffixTree (Just v) Map.empty
+empty = Trie Nothing Map.empty
+singleton v = Trie (Just v) Map.empty
 
-insert [] v (SuffixTree _ mp) = SuffixTree (Just v) mp
-insert (x:xs) v (SuffixTree v' mp) =
+insert [] v (Trie _ mp) = Trie (Just v) mp
+insert (x:xs) v (Trie v' mp) =
   case Map.lookup x mp of
-    Nothing -> let newSuffixTree = insert xs v empty
-                   newMp = Map.insert x newSuffixTree mp
-               in SuffixTree v' newMp
-    Just tree -> let newSuffixTree = insert xs v tree
-                     newMp = Map.insert x newSuffixTree mp
-                 in SuffixTree v' newMp
+    Nothing -> let newTrie = insert xs v empty
+                   newMp = Map.insert x newTrie mp
+               in Trie v' newMp
+    Just tree -> let newTrie = insert xs v tree
+                     newMp = Map.insert x newTrie mp
+                 in Trie v' newMp
 
-lookup [] (SuffixTree v _) = v
-lookup (x:xs) (SuffixTree _ mp) =
+lookup [] (Trie v _) = v
+lookup (x:xs) (Trie _ mp) =
   case Map.lookup x mp of
     Nothing -> Nothing
-    Just tree -> SuffixTree.lookup xs tree
+    Just tree -> Trie.lookup xs tree
 
-delete [] (SuffixTree _ mp)
+delete [] (Trie _ mp)
   | Map.null mp = empty
-  | otherwise = SuffixTree Nothing mp
-delete (x:xs) a@(SuffixTree v mp) =
+  | otherwise = Trie Nothing mp
+delete (x:xs) a@(Trie v mp) =
   case Map.lookup x mp of
     Nothing -> a
     Just tree ->
-      let newSuffixTree = delete xs tree
-      in if newSuffixTree == empty
-         then (SuffixTree v (Map.delete x mp))
-         else (SuffixTree v (Map.insert x newSuffixTree mp))
+      let newTrie = delete xs tree
+      in if newTrie == empty
+         then (Trie v (Map.delete x mp))
+         else (Trie v (Map.insert x newTrie mp))
         
-instance Foldable (SuffixTree c) where
-  foldMap f (SuffixTree mv mp) =
+instance Foldable (Trie c) where
+  foldMap f (Trie mv mp) =
     let currMonoid = case mv of Nothing -> mempty
                                 Just v -> f v
     in if Map.null mp
