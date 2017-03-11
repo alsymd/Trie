@@ -1,4 +1,4 @@
-module SuffixTree
+module Trie
   (empty,
    singleton,
    insert,
